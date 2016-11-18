@@ -1,6 +1,6 @@
 # Shared: código compartido para ANDES
 
-Plex es un conjunto de componentes de UI/UX para el proyecto ANDES.
+Shared es un conjunto código, librerías y servicios para el proyecto ANDES.
 
 
 ## Instalación
