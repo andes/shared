@@ -1,0 +1,10 @@
+<plex-box title="Server Service">
+    <form>
+        <plex-text label="URL" [(ngModel)]="url" name="url">
+        </plex-text>
+        <plex-button label="Get" (click)="callAPI()"></plex-button>
+    </form>
+</plex-box>
+<plex-box *ngIf="data" title="Datos">
+    <pre>{{data | json}}</pre>
+</plex-box>
