@@ -76,6 +76,12 @@ export class Server {
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
+    patch(url: string, body: any, options: Options = null): Observable<any> {
+        return this.http.patch(url, this.stringify(body), this.options)
+            .map((res: Response) => this.parse(res.text()))
+            .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
+    }
+
     delete(url: string, options: Options = null): Observable<any> {
         return this.http.delete(url)
             .map((res: Response) => this.parse(res.text()))
