@@ -47,7 +47,9 @@ export class Server {
         if (options && options.params) {
             result.search = new URLSearchParams()
             for (let param in options.params) {
-                result.search.set(param, options.params[param]);
+                if (options.params[param]) {
+                    result.search.set(param, options.params[param]);
+                }
             }
         }
         return result;
@@ -72,6 +74,12 @@ export class Server {
 
     put(url: string, body: any, options: Options = null): Observable<any> {
         return this.http.put(url, this.stringify(body), this.options)
+            .map((res: Response) => this.parse(res.text()))
+            .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
+    }
+
+    patch(url: string, body: any, options: Options = null): Observable<any> {
+        return this.http.patch(url, this.stringify(body), this.options)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
