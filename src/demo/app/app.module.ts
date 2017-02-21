@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { PlexModule } from 'andes-plex/src/lib/module';
-import { PlexService } from 'andes-plex/src/lib/core/service';
 import { routing, appRoutingProviders } from './app.routing';
 import { Server } from '../../lib/server/server.service';
 
@@ -23,8 +22,7 @@ import { HomeComponent } from './home.component';
    PlexModule,
    routing
  ],
- providers: [
-   PlexService,  
+ providers: [ 
    appRoutingProviders,
    Server  
  ],

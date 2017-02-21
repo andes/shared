@@ -11,15 +11,15 @@ export class Server {
 
     private parse(data: any): any {
         // Parsea fechas de formato .NET en objetos Date
-        var rvalidchars = /^[\],:{}\s]*$/;
-        var rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
-        var rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
-        var rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
-        var dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
-        var dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
+        let rvalidchars = /^[\],:{}\s]*$/;
+        let rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+        let rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+        let rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
+        let dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
+        let dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
 
-        var replacer = function (key, value) {
-            if (typeof (value) === "string") {
+        let replacer = function (key, value) {
+            if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
                     return new Date(value);
                 }
@@ -30,10 +30,10 @@ export class Server {
             return value;
         };
 
-        if (data && typeof (data) == "string" && rvalidchars.test(data.replace(rvalidescape, "@").replace(rvalidtokens, "]").replace(rvalidbraces, ""))) {
+        if (data && typeof (data) === 'string'
+            && rvalidchars.test(data.replace(rvalidescape, '@').replace(rvalidtokens, ']').replace(rvalidbraces, ''))) {
             return window['JSON'].parse(data, replacer);
-        }
-        else {
+        } else {
             return data;
         }
     }
@@ -72,12 +72,6 @@ export class Server {
 
     put(url: string, body: any, options: Options = null): Observable<any> {
         return this.http.put(url, this.stringify(body), this.options)
-            .map((res: Response) => this.parse(res.text()))
-            .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
-    }
-
-    patch(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.patch(url, this.stringify(body), this.options)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
