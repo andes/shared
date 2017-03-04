@@ -1,4 +1,4 @@
-export class Options {
-    public params: any;
-    public showError: boolean = true;
+export interface Options {
+    params: any;
+    showError: boolean;
 }

@@ -5,7 +5,7 @@ Shared es un conjunto código, librerías y servicios para el proyecto ANDES.
 
 ## Instalación
 ```
-npm install andes-shared --save
+npm install @andes/shared --save
 ```
 
 ## Demo

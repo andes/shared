@@ -1,16 +1,19 @@
 import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
+
+import { Plex } from '@andes/plex/src/lib/core/service';
 import { Options } from './options';
+
+// Constantes
+const requestHeaders = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+const defaultOptions: Options = { params: null, showError: true };
 
 @Injectable()
 export class Server {
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
-
-    constructor(private http: Http) { }
+    constructor(private http: Http, private Plex: Plex) { }
 
     private parse(data: any): any {
-        // Parsea fechas de formato .NET en objetos Date
         let rvalidchars = /^[\],:{}\s]*$/;
         let rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
         let rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
@@ -57,34 +60,37 @@ export class Server {
 
     private handleError(error: any, options: Options) {
         console.log(error.json());
-        return Observable.throw(error.json().error || 'Server error');
+        if (!options || options.showError) {
+            this.Plex.modal({ title: 'Error ' + error.status, content: error.json().message, showCancel: false });
+        }
+        return Observable.throw(error.json().message || 'Server error');
     }
 
-    get(url: string, options: Options = null): Observable<any> {
+    get(url: string, options: Options = defaultOptions): Observable<any> {
         return this.http.get(url, this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     post(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.post(url, this.stringify(body), this.options)
+        return this.http.post(url, this.stringify(body), requestHeaders)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
-    put(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.put(url, this.stringify(body), this.options)
+    put(url: string, body: any, options: Options = defaultOptions): Observable<any> {
+        return this.http.put(url, this.stringify(body), requestHeaders)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
-    patch(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.patch(url, this.stringify(body), this.options)
+    patch(url: string, body: any, options: Options = defaultOptions): Observable<any> {
+        return this.http.patch(url, this.stringify(body), requestHeaders)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
-    delete(url: string, options: Options = null): Observable<any> {
+    delete(url: string, options: Options = defaultOptions): Observable<any> {
         return this.http.delete(url)
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
