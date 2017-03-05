@@ -48,7 +48,7 @@ export class Server {
     private prepareOptions(options: Options): RequestOptions {
         let result = new RequestOptions();
         if (options && options.params) {
-            result.search = new URLSearchParams()
+            result.search = new URLSearchParams();
             for (let param in options.params) {
                 if (options.params[param]) {
                     result.search.set(param, options.params[param]);

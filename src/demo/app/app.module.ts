@@ -12,22 +12,22 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
 
 @NgModule({
- declarations: [
-   AppComponent,
-   HomeComponent
- ],
- imports: [
-   BrowserModule,
-   FormsModule,
-   HttpModule,
-   PlexModule,
-   routing
- ],
- providers: [ 
-   appRoutingProviders,
-   Server ,
-   Plex
- ],
- bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HomeComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    PlexModule,
+    routing
+  ],
+  providers: [
+    appRoutingProviders,
+    Server,
+    Plex
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
