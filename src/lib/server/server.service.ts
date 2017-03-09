@@ -6,7 +6,6 @@ import { Plex } from '@andes/plex/src/lib/core/service';
 import { Options } from './options';
 
 // Constantes
-const requestHeaders = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
 const defaultOptions: Options = { params: null, showError: true };
 
 @Injectable()
@@ -46,7 +45,12 @@ export class Server {
     }
 
     private prepareOptions(options: Options): RequestOptions {
-        let result = new RequestOptions();
+        let result = new RequestOptions({
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt'): null
+            }),
+        });
         if (options && options.params) {
             result.search = new URLSearchParams();
             for (let param in options.params) {
@@ -73,25 +77,25 @@ export class Server {
     }
 
     post(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.post(url, this.stringify(body), requestHeaders)
+        return this.http.post(url, this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     put(url: string, body: any, options: Options = defaultOptions): Observable<any> {
-        return this.http.put(url, this.stringify(body), requestHeaders)
+        return this.http.put(url, this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     patch(url: string, body: any, options: Options = defaultOptions): Observable<any> {
-        return this.http.patch(url, this.stringify(body), requestHeaders)
+        return this.http.patch(url, this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     delete(url: string, options: Options = defaultOptions): Observable<any> {
-        return this.http.delete(url)
+        return this.http.delete(url, this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
