@@ -10,6 +10,8 @@ const defaultOptions: Options = { params: null, showError: true };
 
 @Injectable()
 export class Server {
+    private baseURL: string;
+
     constructor(private http: Http, private Plex: Plex) { }
 
     private parse(data: any): any {
@@ -48,7 +50,7 @@ export class Server {
         let result = new RequestOptions({
             headers: new Headers({
                 'Content-Type': 'application/json',
-                'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt'): null
+                'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : null
             }),
         });
         if (options && options.params) {
@@ -65,37 +67,49 @@ export class Server {
     private handleError(error: any, options: Options) {
         let message = error ? error.json().message : 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a Internet.';
         if (!options || options.showError) {
-            this.Plex.modal({ title: 'Error ' + error.status || 'desconocido', content: message, showCancel: false });
+            this.Plex.modal({ title: 'Error ' + (error.status || 'desconocido'), content: message, showCancel: false });
         }
         return Observable.throw(message);
     }
 
+    private getAbsoluteURL(url: string) {
+        if (url.toLowerCase().startsWith('http')) {
+            return url;
+        } else {
+            return this.baseURL + url;
+        }
+    }
+
+    setBaseURL(baseURL: string) {
+        this.baseURL = baseURL;
+    }
+
     get(url: string, options: Options = defaultOptions): Observable<any> {
-        return this.http.get(url, this.prepareOptions(options))
+        return this.http.get(this.getAbsoluteURL(url), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     post(url: string, body: any, options: Options = null): Observable<any> {
-        return this.http.post(url, this.stringify(body), this.prepareOptions(options))
+        return this.http.post(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     put(url: string, body: any, options: Options = defaultOptions): Observable<any> {
-        return this.http.put(url, this.stringify(body), this.prepareOptions(options))
+        return this.http.put(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     patch(url: string, body: any, options: Options = defaultOptions): Observable<any> {
-        return this.http.patch(url, this.stringify(body), this.prepareOptions(options))
+        return this.http.patch(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     delete(url: string, options: Options = defaultOptions): Observable<any> {
-        return this.http.delete(url, this.prepareOptions(options))
+        return this.http.delete(this.getAbsoluteURL(url), this.prepareOptions(options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
