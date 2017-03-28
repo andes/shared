@@ -57,7 +57,13 @@ export class Server {
             result.search = new URLSearchParams();
             for (let param in options.params) {
                 if (options.params[param]) {
-                    result.search.set(param, options.params[param]);
+                    if (Array.isArray(options.params[param])) {
+                        (options.params[param] as Array<any>).forEach((value) => {
+                            result.search.append(param, value);
+                        });
+                    } else {
+                        result.search.set(param, options.params[param]);
+                    }
                 }
             }
         }
@@ -66,7 +72,7 @@ export class Server {
 
     private handleError(error: any, options: Options) {
         let message = error ? error.json().message : 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a Internet.';
-        if (!options || options.showError) {
+        if (!options || options.showError || (options.showError === undefined)) {
             this.Plex.modal({ title: 'Error ' + (error.status || 'desconocido'), content: message, showCancel: false });
         }
         return Observable.throw(message);

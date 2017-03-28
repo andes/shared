@@ -1,4 +1,4 @@
 export interface Options {
     params: any;
-    showError: boolean;
+    showError?: boolean;
 }
