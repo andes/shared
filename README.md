@@ -2,7 +2,7 @@
 
 # Shared
 
-Shared es un conjunto código, librerías y servicios para el proyecto ANDES.
+Shared es un conjunto de código, librerías y servicios para el proyecto ANDES.
 
 
 ## Instalación
