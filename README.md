@@ -1,4 +1,6 @@
-# Shared: código compartido para ANDES
+![ANDES](https://github.com/andes/andes.github.io/raw/master/images/logo.png)
+
+# Shared
 
 Shared es un conjunto código, librerías y servicios para el proyecto ANDES.
 
