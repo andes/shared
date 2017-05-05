@@ -1,6 +1,6 @@
 {
     "name": "@andes/shared",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/andes/shared.git"
@@ -25,7 +25,7 @@
         "@angular/platform-browser": "2.4.8",
         "@angular/platform-browser-dynamic": "2.4.8",
         "@angular/router": "3.4.8",
-        "@andes/plex": "^1.0.0"
+        "@andes/plex": "^1.2.0"
     },
     "devDependencies": {
         "@angular/cli": "1.0.0-beta.32.3",

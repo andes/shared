@@ -73,7 +73,7 @@ export class Server {
     private handleError(error: any, options: Options) {
         let message = error ? error.json().message : 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a Internet.';
         if (!options || options.showError || (options.showError === undefined)) {
-            this.Plex.modal({ title: 'Error ' + (error.status || 'desconocido'), content: message, showCancel: false });
+            this.Plex.alert(message, 'Error ' + (error.status || 'desconocido'));
         }
         return Observable.throw(message);
     }
