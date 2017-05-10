@@ -71,9 +71,9 @@ export class Server {
     }
 
     private handleError(error: any, options: Options) {
-        let message = error ? error.json().message : 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a Internet.';
+        let message = (error && error.json().message) || 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
         if (!options || options.showError || (options.showError === undefined)) {
-            this.Plex.alert(message, 'Error ' + (error.status || 'desconocido'));
+            this.Plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
         }
         return Observable.throw(message);
     }
