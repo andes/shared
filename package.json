@@ -1,6 +1,6 @@
 {
     "name": "@andes/shared",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/andes/shared.git"
@@ -16,6 +16,7 @@
         "e2e": "protractor"
     },
     "dependencies": {
+        "@andes/plex": "^1.3.2",
         "@angular/common": "2.4.8",
         "@angular/compiler": "2.4.8",
         "@angular/core": "2.4.8",
@@ -23,8 +24,7 @@
         "@angular/http": "2.4.8",
         "@angular/platform-browser": "2.4.8",
         "@angular/platform-browser-dynamic": "2.4.8",
-        "@angular/router": "3.4.8",
-        "@andes/plex": "^1.3.0"
+        "@angular/router": "3.4.8"
     },
     "devDependencies": {
         "@angular/cli": "1.0.0-beta.32.3",

@@ -6,7 +6,7 @@ import { Plex } from '@andes/plex/src/lib/core/service';
 import { Options } from './options';
 
 // Constantes
-const defaultOptions: Options = { params: null, showError: true };
+const defaultOptions: Options = { params: null, showError: true, showLoader: true };
 
 @Injectable()
 export class Server {
@@ -70,6 +70,16 @@ export class Server {
         return result;
     }
 
+    private updateLoader(show: boolean, options: Options) {
+        if (!options || options.showLoader || (options.showLoader === undefined)) {
+            if (show) {
+                this.Plex.showLoader();
+            } else {
+                this.Plex.hideLoader();
+            }
+        }
+    }
+
     private handleError(error: any, options: Options) {
         let message = (error && error.json().message) || 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
         if (!options || options.showError || (options.showError === undefined)) {
@@ -91,31 +101,41 @@ export class Server {
     }
 
     get(url: string, options: Options = defaultOptions): Observable<any> {
+        this.updateLoader(true, options);
         return this.http.get(this.getAbsoluteURL(url), this.prepareOptions(options))
+            .finally(() => this.updateLoader(false, options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     post(url: string, body: any, options: Options = null): Observable<any> {
+        this.updateLoader(true, options);
         return this.http.post(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
+            .finally(() => this.updateLoader(false, options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     put(url: string, body: any, options: Options = defaultOptions): Observable<any> {
+        this.updateLoader(true, options);
         return this.http.put(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
+            .finally(() => this.updateLoader(false, options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     patch(url: string, body: any, options: Options = defaultOptions): Observable<any> {
+        this.updateLoader(true, options);
         return this.http.patch(this.getAbsoluteURL(url), this.stringify(body), this.prepareOptions(options))
+            .finally(() => this.updateLoader(false, options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
 
     delete(url: string, options: Options = defaultOptions): Observable<any> {
+        this.updateLoader(true, options);
         return this.http.delete(this.getAbsoluteURL(url), this.prepareOptions(options))
+            .finally(() => this.updateLoader(false, options))
             .map((res: Response) => this.parse(res.text()))
             .catch((err: any, caught: Observable<any>) => this.handleError(err, options));
     }
