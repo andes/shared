@@ -1,4 +1,5 @@
 export interface Options {
-    params: any;
+    params?: any;
     showError?: boolean;
+    showLoader?: boolean;
 }
