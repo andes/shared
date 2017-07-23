@@ -62,7 +62,11 @@ export class Server {
                             result.search.append(param, value);
                         });
                     } else {
-                        result.search.set(param, options.params[param]);
+                        if (options.params[param] instanceof Date) {
+                            result.search.set(param, (options.params[param] as Date).toISOString());
+                        } else {
+                            result.search.set(param, options.params[param]);
+                        }
                     }
                 }
             }
@@ -83,7 +87,12 @@ export class Server {
     private handleError(error: any, options: Options) {
         let message = (error && error.json().message) || 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
         if (!options || options.showError || (options.showError === undefined)) {
-            this.Plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
+            // El código 400 es usado para enviar mensaje de validación al usuario
+            if (error.status === 400) {
+                this.Plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, message);
+            } else {
+                this.Plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
+            }
         }
         return Observable.throw(message);
     }
