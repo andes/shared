@@ -1,12 +1,12 @@
 {
     "name": "@andes/shared",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/andes/shared.git"
     },
     "author": "Red TICs",
-    "license": "LicenseRef-LICENSE",
+    "license": "GPL-3.0",
     "angular-cli": {},
     "scripts": {
         "start": "ng serve",
