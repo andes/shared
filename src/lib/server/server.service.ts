@@ -2,7 +2,7 @@ import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angul
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 
-import { Plex } from '@andes/plex/src/lib/core/service';
+import { Plex } from '@andes/plex';
 import { Options } from './options';
 
 // Constantes
@@ -12,7 +12,7 @@ const defaultOptions: Options = { params: null, showError: true, showLoader: tru
 export class Server {
     private baseURL: string;
 
-    constructor(private http: Http, private Plex: Plex) { }
+    constructor(private http: Http, private plex: Plex) { }
 
     private parse(data: any): any {
         let rvalidchars = /^[\],:{}\s]*$/;
@@ -77,9 +77,9 @@ export class Server {
     private updateLoader(show: boolean, options: Options) {
         if (!options || options.showLoader || (options.showLoader === undefined)) {
             if (show) {
-                this.Plex.showLoader();
+                this.plex.showLoader();
             } else {
-                this.Plex.hideLoader();
+                this.plex.hideLoader();
             }
         }
     }
@@ -89,9 +89,9 @@ export class Server {
         if (!options || options.showError || (options.showError === undefined)) {
             // El código 400 es usado para enviar mensaje de validación al usuario
             if (error.status === 400) {
-                this.Plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, message);
+                this.plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, message);
             } else {
-                this.Plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
+                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
             }
         }
         return Observable.throw(message);

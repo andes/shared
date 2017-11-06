@@ -2,8 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { PlexModule } from '@andes/plex/src/lib/module';
-import { Plex } from '@andes/plex/src/lib/core/service';
+import { PlexModule } from '@andes/plex';
+import { Plex } from '@andes/plex';
 import { routing, appRoutingProviders } from './app.routing';
 import { Server } from '../../lib/server/server.service';
 
