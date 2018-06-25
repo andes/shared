@@ -17,7 +17,7 @@
     "prepublishOnly": "tsc -p ./ --outDir dist/"
   },
   "main": "./dist/index.js",
-  "perrDependencies": {
+  "peerDependencies": {
     "@andes/plex": ">= 3.1.0",
     "@angular/animations": ">=5.0.0",
     "@angular/common": ">=5.0.0",
