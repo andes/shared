@@ -56,7 +56,7 @@ export class Server {
         if (options && options.params) {
             result.search = new URLSearchParams();
             for (let param in options.params) {
-                if (options.params[param]) {
+                if (options.params[param] !== undefined) {
                     if (Array.isArray(options.params[param])) {
                         (options.params[param] as Array<any>).forEach((value) => {
                             result.search.append(param, value);
