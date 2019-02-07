@@ -7,13 +7,24 @@ export function Unsubscribe() {
     return (target, key, descriptor) => {
         const original = descriptor.value;
         let subscriptions;
-        descriptor.value = function () {
+
+        function unsubscribe() {
             if (subscriptions && subscriptions.unsubscribe) {
                 subscriptions.unsubscribe();
                 subscriptions = null;
             }
-            subscriptions = original.apply(this, arguments);
-            return subscriptions;
+        }
+
+        descriptor.value = function () {
+            unsubscribe();
+            const temp = original.apply(this, arguments);
+            if (!temp) {
+                unsubscribe();
+            } else {
+                subscriptions = temp;
+            }
+
+            return temp;
         };
     };
 }

@@ -1,4 +1,7 @@
-// Prototipo de Decorador cache. Proximamente se implementa de forma global.
+/**
+ * Cachea el resultado de una request de forma automatica.
+ * Se puede determinar la KEY de cache.
+ */
 import { Observable } from 'rxjs/Rx';
 
 export function Cache ({key}) {
@@ -8,7 +11,7 @@ export function Cache ({key}) {
         descriptor.value = function (...args) {
             const objectKey = key ? (typeof key === 'string' ? args[0][key] : args[0]) : 'default';
             if (!_cache[objectKey]) {
-                return fn.call(this, args).do(x => _cache[objectKey] = x);
+                return fn.apply(this, args).do(x => _cache[objectKey] = x);
             } else {
                 return new Observable(resultado => resultado.next(_cache[objectKey]));
             }
