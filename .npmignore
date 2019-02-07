@@ -1,5 +1,7 @@
 node_modules
 src/demo
+dist/e2e
+dist/src/demo
 typings
 .json
 .typingsrc
