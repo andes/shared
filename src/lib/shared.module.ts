@@ -21,6 +21,17 @@ import { SexoPipe } from './pipes/sexo.pipe';
         NombrePipe,
         PluralizarPipe,
         SexoPipe
+    ],
+    exports: [
+        FechaPipe,
+        HoraPipe,
+        EdadPipe,
+        EnumerarPipe,
+        FromNowPipe,
+        Html2TextPipe,
+        NombrePipe,
+        PluralizarPipe,
+        SexoPipe
     ]
 })
 export class SharedModule {
