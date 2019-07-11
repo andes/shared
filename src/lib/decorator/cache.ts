@@ -2,8 +2,8 @@
  * Cachea el resultado de una request de forma automatica.
  * Se puede determinar la KEY de cache.
  */
-import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export function Cache({ key }) {
     let _cache: any = {};

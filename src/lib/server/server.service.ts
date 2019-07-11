@@ -19,14 +19,17 @@ export class Server {
     constructor(private http: HttpClient, private plex: Plex) { }
 
     private parse(data: any): any {
-        let rvalidchars = /^[\],:{}\s]*$/;
-        let rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
-        let rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
-        let rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
         let dateISO = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[.,]\d+)?Z/i;
         let dateNet = /\/Date\((-?\d+)(?:-\d+)?\)\//i;
-
-        let replacer = function (key, value) {
+        const traverse = function (o, func) {
+            for (let i of Object.keys(o)) {
+                o[i] = func.apply(this, [i, o[i]]);
+                if (o[i] !== null && typeof (o[i]) === 'object') {
+                    traverse(o[i], func);
+                }
+            }
+        }
+        const replacer = function (key, value) {
             if (typeof (value) === 'string') {
                 if (dateISO.test(value)) {
                     return new Date(value);
@@ -37,13 +40,9 @@ export class Server {
             }
             return value;
         };
+        traverse(data, replacer);
+        return data;
 
-        if (data && typeof (data) === 'string'
-            && rvalidchars.test(data.replace(rvalidescape, '@').replace(rvalidtokens, ']').replace(rvalidbraces, ''))) {
-            return window['JSON'].parse(data, replacer);
-        } else {
-            return data;
-        }
     }
 
     private stringify(object: any) {
