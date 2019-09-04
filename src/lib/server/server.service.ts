@@ -87,14 +87,20 @@ export class Server {
         }
     }
 
-    private handleError(error: any, options: Options) {
-        let message = (error && JSON.parse(error.error).message) || 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
+    private handleError(response: any, options: Options) {
+        let message;
+        if (response.error) {
+            message = response.error.message;
+        } else {
+            message = 'La aplicación no pudo comunicarse con el servidor. Por favor revise su conexión a la red.';
+        }
+
         if (!options || options.showError || (options.showError === undefined)) {
             // El código 400 es usado para enviar mensaje de validación al usuario
-            if (error.status === 400) {
-                this.plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, message);
+            if (response.status === 400) {
+                this.plex.info('warning', `<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, message);
             } else {
-                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${error.status}</div>`, 'No se pudo conectar con el servidor');
+                this.plex.info('danger', `${message}<div class="text-muted small pt-3">Código de error: ${response.status}</div>`, 'No se pudo conectar con el servidor');
             }
         }
         return throwError(message);
