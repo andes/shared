@@ -59,7 +59,7 @@ export class Server {
         if (options && options.params) {
             result.params = new HttpParams();
             for (let param in options.params) {
-                if (options.params[param] !== undefined) {
+                if (options.params[param] !== undefined && options.params[param] !== null) {
                     if (Array.isArray(options.params[param])) {
                         (options.params[param] as Array<any>).forEach((value) => {
                             result.params = result.params.append(param, value);
