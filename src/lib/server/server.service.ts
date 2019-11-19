@@ -40,7 +40,9 @@ export class Server {
             }
             return value;
         };
-        traverse(data, replacer);
+        if (typeof data === 'object') {
+            traverse(data, replacer);
+        }
         return data;
 
     }
