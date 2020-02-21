@@ -5,3 +5,4 @@ export * from './src/lib/decorator/unsubscribe';
 export * from './src/lib/shared.module';
 export * from './src/lib/decorator/observe';
 export * from './src/lib/operators';
+export * from './src/lib/navigations';
