@@ -58,6 +58,9 @@ export class Server {
                 'Authorization': window.sessionStorage.getItem('jwt') ? 'JWT ' + window.sessionStorage.getItem('jwt') : ''
             }),
         };
+        if (options && options.responseType) {
+            result.responseType = options.responseType;
+        }
         if (options && options.params) {
             result.params = new HttpParams();
             for (let param in options.params) {
