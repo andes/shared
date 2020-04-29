@@ -1,5 +1,8 @@
-import { distinctUntilChanged, map, scan, filter, publishReplay, refCount } from 'rxjs/operators';
+import { distinctUntilChanged, map, scan, filter, publishReplay, refCount, tap } from 'rxjs/operators';
 import { pipe, OperatorFunction } from 'rxjs';
+import { saveAs as saveAsFileSaver } from 'file-saver';
+import { Slug } from 'ng2-slugify';
+import * as moment from 'moment';
 
 export function notNull<T>() {
     return filter<T>(user => !!user);
@@ -36,4 +39,27 @@ export function cache<T>(): OperatorFunction<T, T> {
     );
 }
 
+export type Extensiones = 'pdf' | 'csv';
 
+function getHeaders(type: Extensiones) {
+    if (type === 'pdf') {
+        return { type: 'application/pdf' };
+    } else if (type === 'csv') {
+        return { type: 'text/csv' };
+    }
+}
+
+export function saveAs(fileName: string, type: Extensiones, timestamp = true) {
+    return tap((blobData: any) => {
+        const slug = new Slug('default');
+        const headers = getHeaders(type);
+        if (blobData) {
+            const blob = new Blob([blobData], headers);
+            const timestampText = timestamp ? ` - ${moment().format('DD-MM-YYYY-hmmss')}` : '';
+            const file = slug.slugify(`${fileName}${timestampText}.${type}`);
+            saveAsFileSaver(blob, file);
+        } else {
+            window.print();
+        }
+    });
+}
