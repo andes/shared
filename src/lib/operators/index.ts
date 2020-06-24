@@ -56,7 +56,7 @@ export function saveAs(fileName: string, type: Extensiones, timestamp = true) {
         if (blobData) {
             const blob = new Blob([blobData], headers);
             const timestampText = timestamp ? ` - ${moment().format('DD-MM-YYYY-hmmss')}` : '';
-            const file = slug.slugify(`${fileName}${timestampText}.${type}`);
+            const file = slug.slugify(`${fileName}${timestampText}`) + `.${type}`;
             saveAsFileSaver(blob, file);
         } else {
             window.print();
