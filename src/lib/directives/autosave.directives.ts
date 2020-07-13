@@ -1,7 +1,8 @@
-import { Directive, AfterViewInit, Input, OnDestroy, Injectable, Optional } from '@angular/core';
+import { Directive, AfterViewInit, Input, OnDestroy, Injectable, Optional, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { OuterSubscriber } from 'rxjs/internal-compatibility';
 
 
 @Injectable()
@@ -16,6 +17,7 @@ export class AuthContext {
 export class FormAutoSaveDirective implements AfterViewInit, OnDestroy {
     @Input() autosave: string;
     @Input() autosaveType: 'session' | 'user' = 'user';
+    @Output() restore = new EventEmitter<any>();
 
     private subscription: Subscription;
 
@@ -82,6 +84,7 @@ export class FormAutoSaveDirective implements AfterViewInit, OnDestroy {
                 }
             }
             this.form.setValue(values);
+            this.restore.emit();
         } catch (error) {
             // Esto significa que cambio la estructura del formulario
             // la anterior no matchea con la actual, así que limpiamos los datos guardados
