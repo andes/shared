@@ -1,6 +1,6 @@
 {
   "name": "@andes/shared",
-  "version": "5.5.1",
+  "version": "5.6.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andes/shared.git"
