@@ -9,6 +9,7 @@ import { Html2TextPipe } from './pipes/html.pipe';
 import { NombrePipe } from './pipes/nombre.pipe';
 import { PluralizarPipe } from './pipes/pluralizar.pipe';
 import { SexoPipe } from './pipes/sexo.pipe';
+import { FormAutoSaveDirective } from './directives/autosave.directives';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { SexoPipe } from './pipes/sexo.pipe';
         Html2TextPipe,
         NombrePipe,
         PluralizarPipe,
-        SexoPipe
+        SexoPipe,
+        FormAutoSaveDirective
     ],
     exports: [
         FechaPipe,
@@ -31,7 +33,8 @@ import { SexoPipe } from './pipes/sexo.pipe';
         Html2TextPipe,
         NombrePipe,
         PluralizarPipe,
-        SexoPipe
+        SexoPipe,
+        FormAutoSaveDirective
     ]
 })
 export class SharedModule {
