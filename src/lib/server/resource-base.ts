@@ -7,6 +7,7 @@ export interface ShowErrorDetail {
     delete?: boolean;
     get?: boolean;
     search?: boolean;
+    findOne?: boolean;
 }
 
 /**
@@ -45,6 +46,10 @@ export abstract class ResourceBaseHttp<T = any> {
 
     search(query = {}): Observable<T[]> {
         return this.server.get(this.url, { params: query, showError: this.mustShowError('search') });
+    }
+
+    findOne(query = {}): Observable<T[]> {
+        return this.server.get(this.url, { params: query, showError: this.mustShowError('findOne') });
     }
 
     create(body): Observable<T> {
