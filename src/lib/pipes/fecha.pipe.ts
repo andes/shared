@@ -10,7 +10,7 @@ import * as moment from 'moment';
  */
 @Pipe({ name: 'fecha' })
 export class FechaPipe implements PipeTransform {
-    transform(value: any, arg1: string): any {
+    transform(value: any, arg1?: string): any {
         if (arg1 && arg1 === 'utc') {
             return moment(value).utc().format('DD/MM/YYYY');
         } else {
